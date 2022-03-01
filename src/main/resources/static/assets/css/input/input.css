@@ -1,0 +1,11 @@
+.inputsinResaltado[type=text]{
+    font-size: 14px;
+}
+.inputsinResaltado:active{
+    background: none;
+    box-shadow: none;
+}
+.inputsinResaltado:focus{
+    background: none;
+    box-shadow: none;
+}

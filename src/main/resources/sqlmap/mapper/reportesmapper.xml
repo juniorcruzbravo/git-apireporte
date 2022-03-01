@@ -1,0 +1,973 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gob.pe.essalud.apireporseg.planilla.repository.ReportesMapper">
+
+    <resultMap id="personaResultPD" type="Persona" >
+        <result column="IDE_NUMERICO_PERSONA" property="ideNumericoPersona"/>
+        <result column="COD_TDOCUMENT_PERSONA" property="codTdocumentPersona"/>
+        <result column="COD_EDOCUMENT_PERSONA" property="codEdocumentPersona"/>
+        <result column="COD_TPAISEMI_DOCUMENT" property="codTpaisemiDocument"/>
+        <result column="COD_EPAISEMI_DOCUMENT" property="codEpaisemiDocument"/>
+        <result column="NUM_DOCUMENT_PERSONA" property="numDocumentPersona"/>
+        <result column="COD_AUTOGENE_PERSONA" property="codAutogenePersona"/>
+        <result column="TXT_APEPATER_PERSONA" property="txtApepaterPersona"/>
+        <result column="TXT_APEMATER_PERSONA" property="txtApematerPersona"/>
+        <result column="TXT_APECASAD_PERSONA" property="txtApecasadPersona"/>
+        <result column="TXT_PRINOMBR_PERSONA" property="txtPrinombrPersona"/>
+        <result column="TXT_SEGNOMBR_PERSONA" property="txtSegnombrPersona"/>
+        <result column="TXT_NOMBRES_PERSONA"  property="txtNombresPersona"/>
+        <result column="COD_TESTCIVI_PERSONA" property="codTestciviPersona"/>
+        <result column="COD_EESTCIVI_PERSONA" property="codEestciviPersona"/>
+        <result column="COD_TUBIGEO_NACIMIEN" property="codTubigeoNacimien"/>
+        <result column="COD_EUBIGEO_NACIMIEN" property="codEubigeoNacimien"/>
+        <result column="COD_TSEXO_PERSONA"    property="codTsexoPersona"/>
+        <result column="COD_ESEXO_PERSONA"    property="codEsexoPersona"/>
+        <result column="FLG_ESTADO_INHABILI"  property="flgEstadoInhabili"/>
+        <result column="COD_TMOTIVO_INHABILI" property="codTmotivoInhabili"/>
+        <result column="COD_EMOTIVO_INHABILI" property="codEmotivoInhabili"/>
+        <result column="NUM_CIE_RUC"          property="numCieRuc"/>
+        <result column="FEC_INICVIGE_PERSONA" property="fecInicvigePersona"/>
+        <result column="FEC_TERMVIGE_PERSONA" property="fecTermvigePersona"/>
+        <result column="FEC_NACIMI_PERSONA"   property="fecNacimiPersona"/>
+        <result column="FEC_FALLEC_PERSONA"   property="fecFallecPersona"/>
+        <result column="FEC_INVALI_PERPARCI"  property="fecInvaliPerparci"/>
+        <result column="FEC_INVALI_PERTOTAL"  property="fecInvaliPertotal"/>
+        <result column="COD_TOPERACIO_SUNAT"  property="codToperacioSunat"/>
+        <result column="COD_EOPERACIO_SUNAT"  property="codEoperacioSunat"/>
+        <result column="NUM_PAQUETE_SUNAT"    property="numPaqueteSunat"/>
+        <result column="NUM_DOC_PADRE"        property="numDocPadre"/>
+        <result column="NUM_DOC_MADRE"        property="numDocMadre"/>
+        <result column="FEC_REGISTRO_SISTEMA" property="fecRegistroSistema"/>
+        <result column="HOR_REGISTRO_SISTEMA" property="horRegistroSistema"/>
+        <result column="COD_USUARIO_SISTEMA"  property="codUsuarioSistema"/>
+        <result column="COD_TERMINAL_SISTEMA" property="codTerminalSistema"/>
+        <result column="NOMBRE_COMPLETO_PERSONA"    property="nombreCompleto"/>
+    </resultMap>
+
+
+
+
+
+
+    <resultMap id="consultaVirtual" type="ConsultaVirtualLactancia">
+        <result property="dniAsegurado" column="NUMDOCTITULAR" />
+        <result property="nombreAsegurado" column="NOMBRETITULAR" />
+        <result property="dniMadre" column="NUMDOCMADRE" />
+        <result property="nombreMadre" column="NOMBREMADRE" />
+        <result property="fecNacRn" column="fecnacimiento" />
+        <result property="correlativo" column="IDE" />
+        <result property="resultado" column="CODRESULT" />
+        <result property="detalle" column="DETALLE_ERROR" />
+        <result property="resultadoDesc" column="RESULTADO" />
+    </resultMap>
+
+
+    <resultMap id="titulares" type="TitularesSepelio">
+        <result property="idnumericotitular" column="IDNUMERICOTITULAR" />
+        <result property="tiponrdoc" column="TIPONRDOC" />
+        <result property="nrdoc" column="NRDOC" />
+        <result property="nombreMadre" column="NOMBREMADRE" />
+        <result property="apepaterno" column="APEPATERNO" />
+        <result property="apematerno" column="APEMATERNO" />
+        <result property="nombres" column="NOMBRES" />
+    </resultMap>
+
+
+
+    <resultMap id="backoffice" type="Backoffice">
+        <result property="nombre_regla" column="NOMBRE_REGLA" />
+        <result property="cod_resultado" column="COD_RESULTADO" />
+        <result property="flag_resultado" column="FLAG_RESULTADO" />
+        <result property="descripcion" column="DESCRIPCION" />
+        <result property="num_docu_hijo" column="NUM_DOCU_HIJO" />
+    </resultMap>
+
+
+    <parameterMap id="ejecutarCalificacionParams" type="hashmap">
+        <parameter property="tipoDocumentoMadre"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="dniMadre"      		jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="tipoDocumentoHijo"    	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="numeroDocumentoHijo"   jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="partoMultiple"      	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="cui"      				jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="codUsuario"      		jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="ip"      				jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="parametro1"      		jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_RESULT"             jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="VS_EXP_O_NIT"         	jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="VS_DETALLE"         	jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="VS_DETALLE2"         	jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="VS_CURSOR" 		    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaVirtual"  />
+        <parameter property="poc_backoffice" 		jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="backoffice"  />
+    </parameterMap>
+
+    <select id="ejecutarCalificacion" parameterMap="ejecutarCalificacionParams" statementType="CALLABLE">
+        {CALL PKG_PE_LACTANCIA_MIGRA.SP_SAS_VENTANILLA(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }
+    </select>
+
+    <parameterMap id="enviarBackOfficeParams" type="hashmap" >
+        <parameter property="correlativo"   jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="codUsuario"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="ip"    		jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="VS_EXP_O_NIT"  jdbcType="VARCHAR"  mode="OUT"/>
+        <parameter property="VS_DETALLE"    jdbcType="VARCHAR"   mode="OUT"/>
+    </parameterMap>
+
+    <select id="envioBackOffice" parameterMap="enviarBackOfficeParams" statementType="CALLABLE">
+        {CALL PKG_PE_LACTANCIA_MIGRA.SP_ENVIAR_A_BACKOFFICE(?,?,?,?,?) }
+    </select>
+
+
+    <resultMap id="consultaPersona" type="ResultadoAsegurado">
+        <result property="tpdoc" column="TPDOC" />
+        <result property="nrdoc" column="NRDOC" />
+        <result property="apepaterno" column="APEPATERNO" />
+        <result property="apematerno" column="APEMATERNO" />
+        <result property="nombres" column="NOMBRES" />
+        <result property="estcivil" column="ESTCIVIL" />
+        <result property="sexo" column="SEXO"/>
+        <result property="fecnacimiento" column="FECNACIMIENTO" />
+        <result property="fefallecid" column="FEFALLECID" />
+        <result property="codverf" column="CODVERF" />
+        <result property="fecincripcion" column="FECINCRIPCION"/>
+        <result property="fecexpedicion" column="FECEXPEDICION"/>
+        <result property="tpdocpadre" column="TPDOCPADRE"/>
+        <result property="nrdocpadre" column="NRDOCPADRE" />
+        <result property="nompadre" column="NOMPADRE" />
+        <result property="docmadre" column="DOCMADRE" />
+        <result property="nrdocmadre" column="NRDOCMADRE"  />
+        <result property="nommadre" column="NOMMADRE" />
+    </resultMap>
+
+    <parameterMap id="getPersonaParams" type="hashmap">
+        <parameter property="TP_DOC"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="NR_DOC"      		jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="CUR_RECORDSET" 	jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaPersona"  />
+    </parameterMap>
+
+    <select id="getPersona" parameterMap="getPersonaParams" statementType="CALLABLE">
+        {CALL PKG_SAS_LACTANCIA_NAR.PRC_DATA_INSURED(?,?,?) }
+    </select>
+
+
+
+
+
+
+
+
+    <parameterMap id="getPersonaParamsHijo" type="hashmap">
+        <parameter property="NR_DOC"      		jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="CUR_RECORDSET" 	jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaPersona"  />
+    </parameterMap>
+
+    <select id="getHijo" parameterMap="getPersonaParamsHijo" statementType="CALLABLE">
+        {CALL PKG_SAS_LACTANCIA_NAR.PRC_GET_PARENTS_RENIEC(?,?) }
+    </select>
+
+
+
+    <parameterMap id="getTitularesSepelio" type="hashmap">
+        <parameter property="ID_NUMERICO"      		jdbcType="NUMERIC"   mode="IN"/>
+        <parameter property="CUR_RECORDSET" 	jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="titulares"  />
+    </parameterMap>
+
+    <select id="getTitulares" parameterMap="getTitularesSepelio" statementType="CALLABLE">
+        {CALL PKG_OSPE_VIRTUAL.PRC_GET_TITULARES_SEPELIO(?,?) }
+    </select>
+
+
+
+
+    <!--    <select id="buscarPersonaXide"  parameterType="map" resultMap="personaResultPD">-->
+    <!--    SELECT-->
+    <!--    IDE_NUMERICO_PERSONA,-->
+    <!--    COD_TDOCUMENT_PERSONA,-->
+    <!--    COD_EDOCUMENT_PERSONA,-->
+    <!--    COD_TPAISEMI_DOCUMENT,-->
+    <!--    COD_EPAISEMI_DOCUMENT,-->
+    <!--    NUM_DOCUMENT_PERSONA,-->
+    <!--    COD_AUTOGENE_PERSONA,-->
+    <!--    TXT_APEPATER_PERSONA,-->
+    <!--    TXT_APEMATER_PERSONA,-->
+    <!--    TXT_APECASAD_PERSONA,-->
+    <!--    TXT_PRINOMBR_PERSONA,-->
+    <!--    TXT_SEGNOMBR_PERSONA,-->
+    <!--    TXT_NOMBRES_PERSONA,-->
+    <!--    COD_TESTCIVI_PERSONA,-->
+    <!--    COD_EESTCIVI_PERSONA,-->
+    <!--    COD_TUBIGEO_NACIMIEN,-->
+    <!--    COD_EUBIGEO_NACIMIEN,-->
+    <!--    COD_TSEXO_PERSONA,-->
+    <!--    COD_ESEXO_PERSONA,-->
+    <!--    FLG_ESTADO_INHABILI,-->
+    <!--    COD_TMOTIVO_INHABILI,-->
+    <!--    COD_EMOTIVO_INHABILI,-->
+    <!--    NUM_CIE_RUC,-->
+    <!--    FEC_INICVIGE_PERSONA,-->
+    <!--    FEC_TERMVIGE_PERSONA,-->
+    <!--    FEC_NACIMI_PERSONA,-->
+    <!--    FEC_FALLEC_PERSONA,-->
+    <!--    FEC_INVALI_PERPARCI,-->
+    <!--    FEC_INVALI_PERTOTAL,-->
+    <!--    COD_TOPERACIO_SUNAT,-->
+    <!--    COD_EOPERACIO_SUNAT,-->
+    <!--    NUM_PAQUETE_SUNAT,-->
+    <!--    NUM_DOC_PADRE,-->
+    <!--    NUM_DOC_MADRE,-->
+    <!--    FEC_REGISTRO_SISTEMA,-->
+    <!--    HOR_REGISTRO_SISTEMA,-->
+    <!--    COD_USUARIO_SISTEMA,-->
+    <!--    COD_TERMINAL_SISTEMA,-->
+    <!--    TXT_APEPATER_PERSONA ||' '||   TXT_APEMATER_PERSONA||' '||TXT_NOMBRES_PERSONA   NOMBRE_COMPLETO_PERSONA-->
+    <!--    FROM CSAMPERSON WHERE-->
+    <!--    COD_EDOCUMENT_PERSONA = #{tipoDocPersona} AND NUM_DOCUMENT_PERSONA=#{numDocPersona}-->
+    <!--</select>-->
+
+
+
+    <select id="buscarPersonaXide"  parameterType="map" resultMap="personaResultPD">
+        SELECT
+            IDE_NUMERICO_PERSONA,
+            COD_TDOCUMENT_PERSONA,
+            COD_EDOCUMENT_PERSONA,
+            COD_TPAISEMI_DOCUMENT,
+            COD_EPAISEMI_DOCUMENT,
+            NUM_DOCUMENT_PERSONA,
+            COD_AUTOGENE_PERSONA,
+            TXT_APEPATER_PERSONA,
+            TXT_APEMATER_PERSONA,
+            TXT_APECASAD_PERSONA,
+            TXT_PRINOMBR_PERSONA,
+            TXT_SEGNOMBR_PERSONA,
+            TXT_NOMBRES_PERSONA,
+            COD_TESTCIVI_PERSONA,
+            COD_EESTCIVI_PERSONA,
+            COD_TUBIGEO_NACIMIEN,
+            COD_EUBIGEO_NACIMIEN,
+            COD_TSEXO_PERSONA,
+            COD_ESEXO_PERSONA,
+            FLG_ESTADO_INHABILI,
+            COD_TMOTIVO_INHABILI,
+            COD_EMOTIVO_INHABILI,
+            NUM_CIE_RUC,
+            FEC_INICVIGE_PERSONA,
+            FEC_TERMVIGE_PERSONA,
+            FEC_NACIMI_PERSONA,
+            FEC_FALLEC_PERSONA,
+            FEC_INVALI_PERPARCI,
+            FEC_INVALI_PERTOTAL,
+            COD_TOPERACIO_SUNAT,
+            COD_EOPERACIO_SUNAT,
+            NUM_PAQUETE_SUNAT,
+            NUM_DOC_PADRE,
+            NUM_DOC_MADRE,
+            FEC_REGISTRO_SISTEMA,
+            HOR_REGISTRO_SISTEMA,
+            COD_USUARIO_SISTEMA,
+            COD_TERMINAL_SISTEMA,
+            TXT_APEPATER_PERSONA ||' '||   TXT_APEMATER_PERSONA||' '||TXT_NOMBRES_PERSONA   NOMBRE_COMPLETO_PERSONA
+        FROM CSAMPERSON WHERE
+            IDE_NUMERICO_PERSONA = #{ID_NUMERICO}
+    </select>
+
+
+
+
+
+
+
+
+
+
+    <resultMap id="consultadoCaliSepelio" type="ResultadoValidaSepelio">
+        <result property="ide" column="IDE_SOLICITUD" />
+        <result property="tipodoctitular" column="TIPO_DOCUMENTO" />
+        <result property="numdoctitular" column="NUM_DOCUMENTO" />
+        <result property="nombretitular" column="NOMBRE_COMPLETO" />
+        <result property="fecnacimiento" column="FECHA_FALLECIMIENTO" />
+        <result property="tiposegurotitular" column="TIPO_SEGURO" />
+        <result property="detalle_error" column="ERROR" />
+        <result property="codresult" column="CODERROR" />
+    </resultMap>
+
+
+
+
+
+    <parameterMap id="ejecutarCalificaSepelioParams" type="hashmap">
+        <parameter property="p_tipo_doc_titular"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_num_doc_titular"      		jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_num_dependencia"    	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_ip_usuario_crea"   jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_cod_resultado"      	jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="p_grilla_valida" 		    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultadoCaliSepelio"  />
+        <parameter property="v_ide_solicitud" 	 	jdbcType="NUMERIC"   mode="OUT"/>
+    </parameterMap>
+
+    <select id="ejecutarCalificaSepelio" parameterMap="ejecutarCalificaSepelioParams" statementType="CALLABLE">
+        {CALL PKG_PE_SEPELIO_MIA.SP_CALIFICAR_SEPELIO(?,?,?,?,?,?,?) }
+    </select>
+
+
+    <parameterMap id="insertarComprobanteSepelioParams" type="hashmap">
+        <parameter property="p_detalle_sepelio"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_ruc_empresa"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_fec_comprobante"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_numero_serie"   jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_num_comprobante" jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_imp_comprobante" jdbcType="FLOAT"   mode="IN"/>
+        <parameter property="p_tipo_comprobante"  jdbcType="VARCHAR"   mode="IN"/>
+    </parameterMap>
+
+    <select id="insertarComprobanteSepelio" parameterMap="insertarComprobanteSepelioParams" statementType="CALLABLE">
+        {CALL PKG_PE_GLOBAL_SEPELIO_MIA.SP_INSERT_SSUMCOMPRO(?,?,?,?,?,?,?) }
+    </select>
+
+
+
+    <resultMap id="consultadoOrdenSepelio" type="ResultadoGenerarOrdenPago">
+        <result property="tipodocbeneficiario" column="TIPODOCBENEFICIARIO" />
+        <result property="numdocbeneficiario" column="NUMDOCBENEFICIARIO" />
+        <result property="nombrecompletobene" column="NOMBRECOMPLETOBENE" />
+        <result property="monto_subsidiado" column="MONTO_SUBSIDIADO" />
+        <result property="continuar" column="CONTINUAR" />
+    </resultMap>
+
+
+
+    <parameterMap id="ejecutarOrdenPagoSepelioParams" type="hashmap">
+        <parameter property="p_ide_solicitud"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_tipo_doc_beneficiario"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_num_doc_beneficiario"    	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="v_nombre_completo"    	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="v_monto_subsidio"   jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_imp_decl_jurada"   jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_num_dependencia"      	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_ip_origen"      	jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="p_grilla_resultado" 		    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultadoOrdenSepelio"  />
+        <parameter property="p_cod_resultado" 	 	jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="p_texto_1" 	 	jdbcType="VARCHAR"   mode="OUT"/>
+        <parameter property="p_texto_2" 	 	jdbcType="VARCHAR"   mode="OUT"/>
+    </parameterMap>
+
+
+    <select id="ejecutarOrdenPagoSepelio" parameterMap="ejecutarOrdenPagoSepelioParams" statementType="CALLABLE">
+        {CALL PKG_PE_SEPELIO_MIA.SP_GENERAR_ORDEN_PAGO(?,?,?,?,?,?,?,?,?,?,?,?) }
+    </select>
+
+
+
+
+
+
+
+    <resultMap id="consultaPlanillaCur" type="PagosCsampago">
+        <result property="id" column="ID" />
+        <result property="numero_ruc" column="NUMERO_RUC" />
+        <result property="razon_social" column="RAZON_SOCIAL" />
+        <result property="mes_pago" column="MES" />
+        <result property="numero_expediente" column="NUMERO_EXPEDIENTE" />
+        <result property="importe" column="MONTO" />
+        <result property="fecha_de_solicitud" column="FECHA_DE_SOLICITUD" />
+        <result property="tiene_usuario" column="TIENE_USUARIO" />
+        <result property="usuario_activo" column="USUARIO_ACTIVO" />
+        <result property="desembolso" column="DESEMBOLSO" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSubplanillaParams" type="hashmap">
+        <parameter property="PIV_NUMERO_RUC"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaPlanillaCur"  />
+    </parameterMap>
+
+    <select id="listarGrilla" parameterMap="grillaSubplanillaParams" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_PLA_REPOR.SP_VC_GRILLA_SUB_PANILLA_RE(?,?,?,?) }
+    </select>
+
+
+
+
+    <resultMap id="consultaDETAL_01Cur" type="modelDetail127">
+        <result property="id" column="ID" />
+        <result property="ruc" column="RUC" />
+        <result property="razon_social" column="RAZON_SOCIAL" />
+        <result property="numero_documento" column="NUMERO_DOCUMENTO" />
+        <result property="nombrerepresentante" column="NOMBREREPRESENTANTE" />
+        <result property="celular" column="CELULAR" />
+        <result property="correo" column="CORREO" />
+        <result property="dependencia" column="DEPENDENCIA" />
+        <result property="tipo_doc_representa_legal" column="TIPO_DOC_REPRESENTA_LEGAL" />
+        <result property="num_ruc_r_legal" column="NUM_RUC_R_LEGAL" />
+        <result property="estado" column="ESTADO" />
+        <result property="fecha_solicitud" column="FECHA_SOLICITUD" />
+        <result property="fecha_asignacion" column="FECHA_ASIGNACION" />
+        <result property="fecha_atencion_solicitud_2" column="FECHA_ATENCION_SOLICITUD_2" />
+        <result property="asignado_atiende_ultimo" column="ASIGNADO_ATIENDE_ULTIMO" />
+        <result property="motivo_cancelacion" column="MOTIVO_CANCELACION" />
+        <result property="descripcion_cancelacion" column="DESCRIPCION_CANCELACION" />
+        <result property="motivo_ultima_cancelacion" column="MOTIVO_ULTIMA_CANCELACION" />
+        <result property="descripcion_ultima_cancelacion" column="DESCRIPCION_ULTIMA_CANCELACION" />
+        <result property="fecha_solicitud_historica" column="FECHA_SOLICITUD_HISTORICA" />
+        <result property="fecha_atencion_historica" column="FECHA_ATENCION_HISTORICA" />
+        <result property="usuario_atiende_historico" column="USUARIO_ATIENDE_HISTORICO" />
+        <result property="estado_historico" column="ESTADO_HISTORICO" />
+        <result property="motivo_cancel_historico" column="MOTIVO_CANCEL_HISTORICO" />
+        <result property="descripcion_cancel_historico" column="DESCRIPCION_CANCEL_HISTORICO" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUB_DETAL_01Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_DEPENDENCIA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaDETAL_01Cur"  />
+    </parameterMap>
+
+    <select id="listarGrillaDETAL_01" parameterMap="grillaSUB_DETAL_01Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_REPORTE_127_DETAL_01(?,?,?,?) }
+    </select>
+
+
+
+    <resultMap id="consultaREPORTEALTASCur" type="modelAltaCNV">
+        <result property="ide_num" column="IDE_NUM" />
+        <result property="cont_prin" column="CONT_PRIN" />
+        <result property="pais_ti" column="PAIS_TI" />
+        <result property="tip_ti" column="TIP_TI" />
+        <result property="desc_ti" column="DESC_TI" />
+        <result property="num_ti" column="NUM_TI" />
+        <result property="apat_ti" column="APAT_TI" />
+        <result property="amat_ti" column="AMAT_TI" />
+        <result property="nom_ti" column="NOM_TI" />
+        <result property="ruc" column="RUC" />
+        <result property="razon_social" column="RAZON_SOCIAL" />
+        <result property="cod_tipo" column="COD_TIPO" />
+        <result property="tipo" column="TIPO" />
+        <result property="vinculo" column="VINCULO" />
+        <result property="pais_dh" column="PAIS_DH" />
+        <result property="tip_dh" column="TIP_DH" />
+        <result property="desc_dh" column="DESC_DH" />
+        <result property="num_dh" column="NUM_DH" />
+        <result property="apat_dh" column="APAT_DH" />
+        <result property="amat_dh" column="AMAT_DH" />
+        <result property="nom_dh" column="NOM_DH" />
+        <result property="fecha" column="FECHA" />
+        <result property="hora" column="HORA" />
+        <result property="autogen_ti" column="AUTOGEN_TI" />
+        <result property="correo_ti" column="CORREO_TI" />
+        <result property="dependencia" column="DEPENDENCIA" />
+        <result property="doc_sust" column="DOC_SUST" />
+        <result property="tipo_sust" column="TIPO_SUST" />
+        <result property="num_sust" column="NUM_SUST" />
+        <result property="desc_sust" column="DESC_SUST" />
+        <result property="doc_entida" column="DOC_ENTIDA" />
+        <result property="desc_entida" column="DESC_ENTIDA" />
+        <result property="fec_emision" column="FEC_EMISION" />
+        <result property="transac" column="TRANSAC" />
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUB_REPORTEALTASParams" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaREPORTEALTASCur"  />
+    </parameterMap>
+
+    <select id="listarGrillaAltasCNV_02" parameterMap="grillaSUB_REPORTEALTASParams" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_GRILLA_REPORTE_ALTAS_02(?,?,?) }
+    </select>
+
+    <resultMap id="consultaREPORTEBAJASCur" type="modelReporteBajas">
+        <result property="ide_num" column="IDE_NUM" />
+        <result property="cont_prin" column="CONT_PRIN" />
+        <result property="pais_ti" column="PAIS_TI" />
+        <result property="tip_ti" column="TIP_TI" />
+        <result property="desc_ti" column="DESC_TI" />
+        <result property="num_ti" column="NUM_TI" />
+        <result property="apat_ti" column="APAT_TI" />
+        <result property="amat_ti" column="AMAT_TI" />
+        <result property="nom_ti" column="NOM_TI" />
+        <result property="ruc" column="RUC" />
+        <result property="razon_social" column="RAZON_SOCIAL" />
+        <result property="cod_tipo" column="COD_TIPO" />
+        <result property="tipo" column="TIPO" />
+        <result property="vinculo" column="VINCULO" />
+        <result property="pais_dh" column="PAIS_DH" />
+        <result property="tip_dh" column="TIP_DH" />
+        <result property="desc_dh" column="DESC_DH" />
+        <result property="num_dh" column="NUM_DH" />
+        <result property="apat_dh" column="APAT_DH" />
+        <result property="amat_dh" column="AMAT_DH" />
+        <result property="nom_dh" column="NOM_DH" />
+        <result property="fecha" column="FECHA" />
+        <result property="hora" column="HORA" />
+        <result property="autogen_ti" column="AUTOGEN_TI" />
+        <result property="correo_ti" column="CORREO_TI" />
+        <result property="dependencia" column="DEPENDENCIA" />
+        <result property="doc_sust" column="DOC_SUST" />
+        <result property="tipo_sust" column="TIPO_SUST" />
+        <result property="num_sust" column="NUM_SUST" />
+        <result property="desc_sust" column="DESC_SUST" />
+        <result property="doc_entida" column="DOC_ENTIDA" />
+        <result property="desc_entida" column="DESC_ENTIDA" />
+        <result property="fec_emision" column="FEC_EMISION" />
+        <result property="transac" column="TRANSAC" />
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUB_REPORTEBAJASParams" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaREPORTEBAJASCur"  />
+    </parameterMap>
+
+    <select id="listarGrillaReporteBajas_03" parameterMap="grillaSUB_REPORTEBAJASParams" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_GRILLA_REPORTE_BAJAS_03(?,?,?) }
+    </select>
+
+
+
+    <resultMap id="consultaAcreComplParamsCur" type="modelAcredComple">
+        <result property="num_acred" column="NUM_ACRED" />
+        <result property="cod_tipacred" column="COD_TIPACRED" />
+        <result property="desc_tipacred" column="DESC_TIPACRED" />
+        <result property="cod_tit" column="COD_TIT" />
+        <result property="desc_tit" column="DESC_TIT" />
+        <result property="num_tit" column="NUM_TIT" />
+        <result property="apat_tit" column="APAT_TIT" />
+        <result property="amat_tit" column="AMAT_TIT" />
+        <result property="nom_tit" column="NOM_TIT" />
+        <result property="ruc" column="RUC" />
+        <result property="razon" column="RAZON" />
+        <result property="tipo_oper" column="TIPO_OPER" />
+        <result property="condicion" column="CONDICION" />
+        <result property="cod_der" column="COD_DER" />
+        <result property="desc_der" column="DESC_DER" />
+        <result property="num_der" column="NUM_DER" />
+        <result property="apat_der" column="APAT_DER" />
+        <result property="amat_der" column="AMAT_DER" />
+        <result property="nom_der" column="NOM_DER" />
+        <result property="desde" column="DESDE" />
+        <result property="hasta" column="HASTA" />
+        <result property="registro" column="REGISTRO" />
+        <result property="tip_arch" column="TIP_ARCH" />
+        <result property="fini_vl" column="FINI_VL" />
+        <result property="ruc_dsus" column="RUC_DSUS" />
+        <result property="periodo" column="PERIODO" />
+        <result property="femision" column="FEMISION" />
+        <result property="usuario" column="USUARIO" />
+        <result property="correo" column="CORREO" />
+        <result property="codigo_ospe" column="CODIGO_OSPE" />
+        <result property="dependencia" column="DEPENDENCIA" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBAcreComplParams_04" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaAcreComplParamsCur"  />
+    </parameterMap>
+
+    <select id="listarGrillaAcreComple_04" parameterMap="grillaSUBAcreComplParams_04" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_GRILLA_ACRE_COMPLE_04(?,?,?) }
+    </select>
+
+
+
+
+    <resultMap id="consultaECO_SEGUROSCur" type="modelEcoSeguros">
+        <result property="solicitante" column="SOLICITANTE" />
+        <result property="celular" column="CELULAR" />
+        <result property="correo" column="CORREO" />
+        <result property="ruc" column="RUC" />
+        <result property="razon_social" column="RAZON_SOCIAL" />
+        <result property="ospe" column="OSPE" />
+        <result property="cod_benef" column="COD_BENEF" />
+        <result property="nro_benef" column="NRO_BENEF" />
+        <result property="beneficiario" column="BENEFICIARIO" />
+        <result property="cod_etipo_subsidio" column="COD_ETIPO_SUBSIDIO" />
+        <result property="citt" column="CITT" />
+        <result property="monto" column="MONTO" />
+        <result property="fec_ini_solicitud" column="FEC_INI_SOLICITUD" />
+        <result property="fec_fin_solicitud" column="FEC_FIN_SOLICITUD" />
+        <result property="fecha_solicitud" column="FECHA_SOLICITUD" />
+        <result property="fecha_proceso" column="FECHA_PROCESO" />
+        <result property="nit" column="NIT" />
+
+        <result property="cit_20_primeros" column="CIT_20_PRIMEROS" />
+        <result property="motivo_observacion" column="MOTIVO_OBSERVACION" />
+        <result property="fecha_cese" column="FECHA_CESE" />
+        <result property="tipo_pago" column="TIPO_PAGO" />
+        <result property="direccion" column="DIRECCION" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaECO_SEGUROSParams" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_DEPENDENCIA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaECO_SEGUROSCur"  />
+    </parameterMap>
+
+    <select id="listarGrillaEcoSeguros_05" parameterMap="grillaECO_SEGUROSParams" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_GRILLA_ECO_SEGUROS_05(?,?,?,?) }
+    </select>
+
+
+
+
+
+
+
+
+    <resultMap id="consultaCANJE_06Cur" type="modelCanjeCitt">
+        <result property="cantidad_canje_citt" column="CANTIDAD_CANJE_CITT" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUB_CANJE_06Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaCANJE_06Cur"  />
+    </parameterMap>
+
+    <select id="listarGrillaCANJE_06" parameterMap="grillaSUB_CANJE_06Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_CANTIDAD_CANJE_06(?,?,?) }
+    </select>
+
+
+    <resultMap id="consultaMensualAseguradoCur" type="modelMensualAsegurado">
+        <result property="id" column="ID" />
+        <result property="id_tipo_documento" column="ID_TIPO_DOCUMENTO" />
+        <result property="numero_documento" column="NUMERO_DOCUMENTO" />
+        <result property="nombres" column="NOMBRES" />
+        <result property="apellido_paterno" column="APELLIDO_PATERNO" />
+        <result property="apellido_materno" column="APELLIDO_MATERNO" />
+        <result property="correo" column="CORREO" />
+        <result property="celular" column="CELULAR" />
+        <result property="dependencia" column="DEPENDENCIA" />
+        <result property="estado" column="ESTADO" />
+
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBMensualAsegurado_07Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaMensualAseguradoCur"  />
+    </parameterMap>
+
+    <select id="listarGrillaMensualAsegurado_07" parameterMap="grillaSUBMensualAsegurado_07Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_MENSUAL_ASEGURADO_07(?,?,?) }
+    </select>
+
+
+
+
+    <resultMap id="consultaMensualEMPRESA_08Cur" type="modelMensualEmpresa">
+        <result property="ruc" column="RUC" />
+        <result property="estado" column="ESTADO" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBMensualEMPRESA_08Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaMensualEMPRESA_08Cur"  />
+    </parameterMap>
+
+    <select id="listarGrillaMensualEMPRESA_08" parameterMap="grillaSUBMensualEMPRESA_08Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_MENSUAL_EMPRESA_08(?,?,?) }
+    </select>
+
+
+
+
+
+    <resultMap id="consultaEXPE_SAS_09Cur" type="modelEXPE_SAS">
+
+        <result property="ide_num_solicitu" column="IDE_NUM_SOLICITU" />
+        <result property="cod_tdoc_titular" column="COD_TDOC_TITULAR" />
+        <result property="cod_edoc_titular" column="COD_EDOC_TITULAR" />
+        <result property="num_doc_titular" column="NUM_DOC_TITULAR" />
+        <result property="cod_ttipo_subsidio" column="COD_TTIPO_SUBSIDIO" />
+        <result property="cod_etipo_subsidio" column="COD_ETIPO_SUBSIDIO" />
+        <result property="cod_testado_subsidio" column="COD_TESTADO_SUBSIDIO" />
+        <result property="cod_eestado_subsidio" column="COD_EESTADO_SUBSIDIO" />
+        <result property="fec_fecha_presentacion" column="FEC_FECHA_PRESENTACION" />
+        <result property="fec_fecha_proceso" column="FEC_FECHA_PROCESO" />
+        <result property="cod_expediente_nit" column="COD_EXPEDIENTE_NIT" />
+        <result property="flg_activo_inactivo" column="FLG_ACTIVO_INACTIVO" />
+        <result property="fec_usuario_crea" column="FEC_USUARIO_CREA" />
+        <result property="cod_usuario_crea" column="COD_USUARIO_CREA" />
+        <result property="txt_ipusuario_crea" column="TXT_IPUSUARIO_CREA" />
+        <result property="fec_usuario_act" column="FEC_USUARIO_ACT" />
+        <result property="cod_usuario_act" column="COD_USUARIO_ACT" />
+        <result property="txt_ipusuario_act" column="TXT_IPUSUARIO_ACT" />
+        <result property="cod_empleador" column="COD_EMPLEADOR" />
+        <result property="cod_ide_repolact" column="COD_IDE_REPOLACT" />
+        <result property="num_monto_subsidiado" column="NUM_MONTO_SUBSIDIADO" />
+        <result property="numero_nitt_monto_recortado" column="NUMERO_NITT_MONTO_RECORTADO" />
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBEXPE_SAS_09Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaEXPE_SAS_09Cur"  />
+    </parameterMap>
+
+    <select id="listarGrillaEXPE_SAS_09" parameterMap="grillaSUBEXPE_SAS_09Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_GRILLA_EXPE_SAS_09(?,?,?) }
+    </select>
+
+
+
+
+
+    <resultMap id="consultaEXPE_VIVA_10Cur" type="modelEXPE_VIVA">
+
+        <result property="ide_num_solicitud_ov" column="IDE_NUM_SOLICITUD_OV" />
+        <result property="cod_tdoc_usuario" column="COD_TDOC_USUARIO" />
+        <result property="cod_edoc_usuario" column="COD_EDOC_USUARIO" />
+        <result property="num_doc_usuario" column="NUM_DOC_USUARIO" />
+        <result property="cod_ttipo_subsidio" column="COD_TTIPO_SUBSIDIO" />
+        <result property="cod_etipo_subsidio" column="COD_ETIPO_SUBSIDIO" />
+        <result property="fec_usuario_crea" column="FEC_USUARIO_CREA" />
+        <result property="fec_usuario_act" column="FEC_USUARIO_ACT" />
+        <result property="flg_estado_pro" column="FLG_ESTADO_PRO" />
+        <result property="fec_proceso" column="FEC_PROCESO" />
+        <result property="url_documento" column="URL_DOCUMENTO" />
+        <result property="ide_num_solicitud" column="IDE_NUM_SOLICITUD" />
+        <result property="cod_ospe" column="COD_OSPE" />
+        <result property="tip_pago" column="TIP_PAGO" />
+        <result property="ide_group_solicitud_ov" column="IDE_GROUP_SOLICITUD_OV" />
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBEXPE_VIVA_10Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consultaEXPE_VIVA_10Cur"  />
+    </parameterMap>
+
+    <select id="listarGrillaEXPE_VIVA_10" parameterMap="grillaSUBEXPE_VIVA_10Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_GRILLA_EXPE_VIVA_10(?,?,?) }
+    </select>
+
+
+
+
+    <resultMap id="consulta_20Primeros_11Cur" type="model20PrimerosDias">
+
+        <result property="fuente" column="FUENTE" />
+        <result property="id_tramite_emergencia" column="ID_TRAMITE_EMERGENCIA" />
+        <result property="fecha_creacion" column="FECHA_CREACION" />
+        <result property="oficinacevitaseg" column="OFICINACEVITASEG" />
+        <result property="formulario_detalle" column="FORMULARIO_DETALLE" />
+        <result property="tipo_documento_aseg" column="TIPO_DOCUMENTO_ASEG" />
+        <result property="numero_documento_aseg" column="NUMERO_DOCUMENTO_ASEG" />
+        <result property="apellidos_nombres_aseg" column="APELLIDOS_NOMBRES_ASEG" />
+        <result property="celular_aseg" column="CELULAR_ASEG" />
+        <result property="correo_aseg" column="CORREO_ASEG" />
+        <result property="rucempleador" column="RUCEMPLEADOR" />
+        <result property="monto_subsidio" column="MONTO_SUBSIDIO" />
+        <result property="periodo_inicio" column="PERIODO_INICIO" />
+        <result property="periodo_fin" column="PERIODO_FIN" />
+        <result property="citt" column="CITT" />
+        <result property="periodo_inicio_citt" column="PERIODO_INICIO_CITT" />
+        <result property="periodo_fin_citt" column="PERIODO_FIN_CITT" />
+        <result property="nombre_archivo_adjunto" column="NOMBRE_ARCHIVO_ADJUNTO" />
+        <result property="ubicacion_archivo" column="UBICACION_ARCHIVO" />
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUB20_PRIMEROS_11Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consulta_20Primeros_11Cur"  />
+    </parameterMap>
+
+    <select id="listarGrilla20_PRIMEROS_DIAS_11" parameterMap="grillaSUB20_PRIMEROS_11Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_20_PRIMEROS_DIAS_11(?,?,?) }
+    </select>
+
+
+
+
+
+
+    <resultMap id="consulta_Sepelio_12Cur" type="modelSepelioRepor">
+        <result property="fuente" column="FUENTE" />
+        <result property="id_tramite_emergencia" column="ID_TRAMITE_EMERGENCIA" />
+        <result property="fecha_creacion" column="FECHA_CREACION" />
+        <result property="oficinacevitaseg" column="OFICINACEVITASEG" />
+        <result property="formulario_detalle" column="FORMULARIO_DETALLE" />
+        <result property="tipo_documento_aseg" column="TIPO_DOCUMENTO_ASEG" />
+        <result property="numero_documento_aseg" column="NUMERO_DOCUMENTO_ASEG" />
+        <result property="apellidos_nombres_aseg" column="APELLIDOS_NOMBRES_ASEG" />
+        <result property="celular_aseg" column="CELULAR_ASEG" />
+        <result property="correo_aseg" column="CORREO_ASEG" />
+        <result property="tipo_doc_titular" column="TIPO_DOC_TITULAR" />
+        <result property="numero_doc_titular" column="NUMERO_DOC_TITULAR" />
+        <result property="rucultimo_empleador" column="RUCULTIMO_EMPLEADOR" />
+        <result property="certificado_defuncion" column="CERTIFICADO_DEFUNCION" />
+        <result property="fecha_fallecimiento" column="FECHA_FALLECIMIENTO" />
+        <result property="monto_subsidio" column="MONTO_SUBSIDIO" />
+        <result property="tipo_doc_beneficiario" column="TIPO_DOC_BENEFICIARIO" />
+        <result property="nro_doc_beneficiario" column="NRO_DOC_BENEFICIARIO" />
+        <result property="parentesco_beneficiario" column="PARENTESCO_BENEFICIARIO" />
+        <result property="fecha_comprobante" column="FECHA_COMPROBANTE" />
+        <result property="ruccomprobante" column="RUCCOMPROBANTE" />
+        <result property="tipo_comprobante" column="TIPO_COMPROBANTE" />
+        <result property="serie_comprobante" column="SERIE_COMPROBANTE" />
+        <result property="numero_comprobante" column="NUMERO_COMPROBANTE" />
+        <result property="importe_comprobante" column="IMPORTE_COMPROBANTE" />
+        <result property="nombre_archivo_adjunto" column="NOMBRE_ARCHIVO_ADJUNTO" />
+        <result property="ubicacion_archivo" column="UBICACION_ARCHIVO" />
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBSepelio_12Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consulta_Sepelio_12Cur"  />
+    </parameterMap>
+
+    <select id="listarGrilla_Sepelio_12" parameterMap="grillaSUBSepelio_12Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_REPORTE_SEPELIO_12(?,?,?) }
+    </select>
+
+
+
+    <resultMap id="consulta_Direccion_13Cur" type="modelDireccion">
+
+        <result property="fuente" column="FUENTE" />
+        <result property="id_tramite_emergencia" column="ID_TRAMITE_EMERGENCIA" />
+        <result property="fecha_creacion" column="FECHA_CREACION" />
+        <result property="oficinacevitaseg" column="OFICINACEVITASEG" />
+        <result property="formulario_detalle" column="FORMULARIO_DETALLE" />
+        <result property="tipo_documento_aseg" column="TIPO_DOCUMENTO_ASEG" />
+        <result property="numero_documento_aseg" column="NUMERO_DOCUMENTO_ASEG" />
+        <result property="apellidos_nombres_aseg" column="APELLIDOS_NOMBRES_ASEG" />
+        <result property="celular_aseg" column="CELULAR_ASEG" />
+        <result property="correo_aseg" column="CORREO_ASEG" />
+        <result property="direccion_act" column="DIRECCION_ACT" />
+        <result property="departamento_act" column="DEPARTAMENTO_ACT" />
+        <result property="provincia_act" column="PROVINCIA_ACT" />
+        <result property="distrito_act" column="DISTRITO_ACT" />
+        <result property="nombre_archivo_adjunto" column="NOMBRE_ARCHIVO_ADJUNTO" />
+        <result property="ubicacion_archivo" column="UBICACION_ARCHIVO" />
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBDireccion_13Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consulta_Direccion_13Cur"  />
+    </parameterMap>
+
+    <select id="listarGrilla_Direccion_13" parameterMap="grillaSUBDireccion_13Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_REPORTE_DIRECION_13(?,?,?) }
+    </select>
+
+
+
+
+
+    <resultMap id="consulta_Bajas_14Cur" type="modelBajas">
+
+        <result property="fuente" column="FUENTE" />
+        <result property="id_tramite_emergencia" column="ID_TRAMITE_EMERGENCIA" />
+        <result property="fecha_creacion" column="FECHA_CREACION" />
+        <result property="oficinacevitaseg" column="OFICINACEVITASEG" />
+        <result property="formulario_detalle" column="FORMULARIO_DETALLE" />
+        <result property="tipo_documento_aseg" column="TIPO_DOCUMENTO_ASEG" />
+        <result property="numero_documento_aseg" column="NUMERO_DOCUMENTO_ASEG" />
+        <result property="apellidos_nombres_aseg" column="APELLIDOS_NOMBRES_ASEG" />
+        <result property="celular_aseg" column="CELULAR_ASEG" />
+        <result property="correo_aseg" column="CORREO_ASEG" />
+        <result property="fecha_cese_baja_fallec" column="FECHA_CESE_BAJA_FALLEC" />
+        <result property="ultimo_empleador_baja" column="ULTIMO_EMPLEADOR_BAJA" />
+        <result property="nombre_archivo_adjunto" column="NOMBRE_ARCHIVO_ADJUNTO" />
+        <result property="ubicacion_archivo" column="UBICACION_ARCHIVO" />
+
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBBajas_14Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consulta_Bajas_14Cur"  />
+    </parameterMap>
+
+    <select id="listarGrilla_Bajas_14" parameterMap="grillaSUBBajas_14Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_REPORTE_BAJAS_14(?,?,?) }
+    </select>
+
+
+
+
+
+
+    <resultMap id="consulta_Latencia_15Cur" type="modelLatencia">
+
+        <result property="fuente" column="FUENTE" />
+        <result property="id_tramite_emergencia" column="ID_TRAMITE_EMERGENCIA" />
+        <result property="fecha_creacion" column="FECHA_CREACION" />
+        <result property="oficinacevitaseg" column="OFICINACEVITASEG" />
+        <result property="formulario_detalle" column="FORMULARIO_DETALLE" />
+        <result property="tipo_documento_aseg" column="TIPO_DOCUMENTO_ASEG" />
+        <result property="numero_documento_aseg" column="NUMERO_DOCUMENTO_ASEG" />
+        <result property="apellidos_nombres_aseg" column="APELLIDOS_NOMBRES_ASEG" />
+        <result property="celular_aseg" column="CELULAR_ASEG" />
+        <result property="correo_aseg" column="CORREO_ASEG" />
+        <result property="fecha_cese_latencia" column="FECHA_CESE_LATENCIA" />
+        <result property="ultimo_empleador_latencia" column="ULTIMO_EMPLEADOR_LATENCIA" />
+        <result property="nombre_archivo_adjunto" column="NOMBRE_ARCHIVO_ADJUNTO" />
+        <result property="ubicacion_archivo" column="UBICACION_ARCHIVO" />
+
+
+    </resultMap>
+
+
+
+    <parameterMap id="grillaSUBLatencia15Params" type="hashmap">
+        <parameter property="PIV_FECHA_INICIO"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="PIV_FECHA_FECHA"    jdbcType="VARCHAR"   mode="IN"/>
+        <parameter property="VS_CURSOR"    jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT" resultMap="consulta_Latencia_15Cur"  />
+    </parameterMap>
+
+    <select id="listarGrilla_Latencia_15" parameterMap="grillaSUBLatencia15Params" statementType="CALLABLE">
+        {CALL usrcsa.PKG_CONSULTA_REPOR_SEGUROS.SP_VC_REPORTE_LATENCIA_15(?,?,?) }
+    </select>
+
+
+</mapper>
